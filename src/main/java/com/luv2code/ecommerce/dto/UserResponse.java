@@ -4,7 +4,7 @@ import com.luv2code.ecommerce.model.UserRole;
 import lombok.Data;
 
 @Data
-public class UserResponseDTO {
+public class UserResponse {
     private String id;
     private String firstName;
     private String lastName;

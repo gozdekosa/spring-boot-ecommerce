@@ -1,8 +1,8 @@
 package com.luv2code.ecommerce.service;
 
 import com.luv2code.ecommerce.dto.AddressDTO;
-import com.luv2code.ecommerce.dto.UserRequestDTO;
-import com.luv2code.ecommerce.dto.UserResponseDTO;
+import com.luv2code.ecommerce.dto.UserRequest;
+import com.luv2code.ecommerce.dto.UserResponse;
 import com.luv2code.ecommerce.model.Address;
 import com.luv2code.ecommerce.repository.UserRepository;
 import com.luv2code.ecommerce.model.User;
@@ -19,17 +19,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<UserResponseDTO> fetchAllUsers(){
+    public List<UserResponse> fetchAllUsers(){
         return userRepository.findAll().stream().map(this::mapToUserResponse).collect(Collectors.toList());
     }
 
-    public void addUser(UserRequestDTO userRequest) {
+    public void addUser(UserRequest userRequest) {
         User user = new User();
         updateUserFromRequest(user, userRequest);
         userRepository.save(user);
     }
 
-    private void updateUserFromRequest(User user, UserRequestDTO userRequest) {
+    private void updateUserFromRequest(User user, UserRequest userRequest) {
         user.setFirstName(userRequest.getFirstName());
         user.setLastName(userRequest.getLastName());
         user.setEmail(userRequest.getEmail());
@@ -45,11 +45,11 @@ public class UserService {
         }
     }
 
-    public Optional<UserResponseDTO> fetchUser(Long id) {
+    public Optional<UserResponse> fetchUser(Long id) {
         return userRepository.findById(id).map(this::mapToUserResponse);
     }
 
-    public boolean updateUser(Long id, UserRequestDTO updatedUserRequest) {
+    public boolean updateUser(Long id, UserRequest updatedUserRequest) {
         return userRepository.findById(id)
                 .map(existingUser -> {
                     updateUserFromRequest(existingUser, updatedUserRequest);
@@ -58,8 +58,8 @@ public class UserService {
                 }).orElse(false);
     }
 
-    private UserResponseDTO mapToUserResponse(User user) {
-        UserResponseDTO response = new UserResponseDTO();
+    private UserResponse mapToUserResponse(User user) {
+        UserResponse response = new UserResponse();
         response.setId(String.valueOf(user.getId()));
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
